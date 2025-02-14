@@ -20,7 +20,10 @@ const sendNotification = async ({ msg, telegramThreadId }) => {
     const response = await fetch(apiUrl);
     const body = await response.json();
     $logger.info(`SendNotification was succesful: ${body.ok}`);
-  } catch (error) {}
+  } catch (error) {
+    $logger.info(`SendNotification was succesful failed`);
+    $logger.info(error);
+  }
 };
 
 export default sendNotification;
