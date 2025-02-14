@@ -1,20 +1,15 @@
 import '@dotenvx/dotenvx/config';
 let config = {};
 
-config.baseUrls = ['https://www.olx.com.br/brasil?pe=400&sf=1&opst=2&q='];
+config.baseUrls = [
+  'https://www.olx.com.br/brasil?pe=400&sf=1&opst=2&q=',
+  'https://www.olx.com.br/estado-sc/florianopolis-e-regiao?pe=400&sf=1&q=',
+];
 
 config.searches = {
-  'gameboy': {
-    searchTerms: ['nintendo', 'gameboy', 'game%20boy'],
-    messageThreadId: 5,
-  },
-  'pokemon': {
-    searchTerms: ['pokemon'],
-    messageThreadId: 47,
-  },
-  'ipod': {
-    searchTerms: ['ipod'],
-    messageThreadId: 46,
+  'qualquer-key': {
+    searchTerms: ['termo-de-pesquisa'],
+    messageThreadId: 1, // ID used to send the message to an specific group topic
   },
 };
 

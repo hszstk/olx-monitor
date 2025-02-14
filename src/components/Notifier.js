@@ -5,16 +5,22 @@ import config from '#config.js';
 import $logger from '#components/Logger.js';
 
 const sendNotification = async ({ msg, telegramThreadId }) => {
-  const queryString = querystring.stringify({
-    chat_id: config.telegramChatID,
-    message_thread_id: telegramThreadId,
-    text: msg,
-  });
+  try {
+    const queryString = querystring.stringify({
+      chat_id: config.telegramChatID,
+      message_thread_id: telegramThreadId,
+      text: msg,
+    });
 
-  const apiUrl = `https://api.telegram.org/bot${config.telegramToken}/sendMessage?${queryString}`;
-  const response = await fetch(apiUrl);
-  const body = await response.json();
-  $logger.info(`SendNotification was succesful: ${body.ok}`);
+    const base_url = process.env.IS_BOT_LOCAL
+      ? 'http://localhost:8081'
+      : 'https://api.telegram.org';
+
+    const apiUrl = `${base_url}/bot${config.telegramToken}/sendMessage?${queryString}`;
+    const response = await fetch(apiUrl);
+    const body = await response.json();
+    $logger.info(`SendNotification was succesful: ${body.ok}`);
+  } catch (error) {}
 };
 
 export default sendNotification;
