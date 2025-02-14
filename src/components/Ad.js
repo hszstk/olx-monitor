@@ -11,6 +11,7 @@ class Ad {
     this.price = ad.price;
     this.valid = false;
     (this.saved = null), (this.notify = ad.notify);
+    this.telegramThreadId = ad.telegramThreadId;
   }
 
   process = async () => {
@@ -53,9 +54,7 @@ class Ad {
     if (this.notify) {
       try {
         const msg = 'New ad found!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url;
-        sendNotification(msg, this.id);
-
-        // eslint-disable-next-line no-unused-vars
+        sendNotification({ msg, telegramThreadId: this.telegramThreadId });
       } catch (error) {
         $logger.error(error);
         $logger.error('Could not send a notification');

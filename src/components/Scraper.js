@@ -12,7 +12,7 @@ let validAds = 0;
 let adsFound = 0;
 let nextPage = true;
 
-const scraper = async (url) => {
+const scraper = async ({ url, telegramThreadId }) => {
   page = 1;
   maxPrice = 0;
   minPrice = 99999999;
@@ -23,13 +23,12 @@ const scraper = async (url) => {
   const parsedUrl = new URL(url);
   const searchTerm = parsedUrl.searchParams.get('q') || '';
   const notify = await urlAlreadySearched(url);
-  $logger.info(`Will notify: ${notify}`);
 
   const currentUrl = setUrlParam(url, 'o', page);
   try {
     const response = await $httpClient(currentUrl);
     const $ = cheerio.load(response);
-    nextPage = await scrapePage($, searchTerm, notify, url);
+    nextPage = await scrapePage({ $, searchTerm, notify, telegramThreadId });
   } catch (error) {
     $logger.error(error);
     return;
@@ -38,6 +37,7 @@ const scraper = async (url) => {
   $logger.info('Page: ' + page);
   $logger.info('NextPage: ' + nextPage);
   $logger.info('Valid ads: ' + validAds);
+  $logger.info(`Will notify: ${notify}`);
 
   if (validAds) {
     const scrapperLog = {
@@ -51,7 +51,7 @@ const scraper = async (url) => {
   }
 };
 
-const scrapePage = async ($, searchTerm, notify) => {
+const scrapePage = async ({ $, searchTerm, notify, telegramThreadId }) => {
   try {
     const script = $('script[id="__NEXT_DATA__"]').text();
 
@@ -88,6 +88,7 @@ const scrapePage = async ($, searchTerm, notify) => {
         searchTerm,
         price,
         notify,
+        telegramThreadId,
       };
 
       const ad = new Ad(result);
