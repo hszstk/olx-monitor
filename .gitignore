@@ -3,5 +3,7 @@
 scrapper.log
 config.js
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 node_modules
