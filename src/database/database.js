@@ -2,9 +2,7 @@ import path from 'path';
 import Database from 'better-sqlite3';
 import config from '#config.js';
 
-const db = new Database(path.join(import.meta.dirname, '../', config.dbFile), {
-  verbose: console.log,
-});
+const db = new Database(path.join(import.meta.dirname, '../', config.dbFile));
 db.pragma('journal_mode = WAL');
 
 const createTables = () => {

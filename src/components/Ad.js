@@ -1,4 +1,4 @@
-import notifier from '#components/Notifier.js';
+import sendNotification from '#components/Notifier.js';
 import $logger from '#components/Logger.js';
 import * as adRepository from '#repositories/adRepository.js';
 
@@ -53,9 +53,11 @@ class Ad {
     if (this.notify) {
       try {
         const msg = 'New ad found!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url;
-        notifier.sendNotification(msg, this.id);
+        sendNotification(msg, this.id);
+
         // eslint-disable-next-line no-unused-vars
       } catch (error) {
+        $logger.error(error);
         $logger.error('Could not send a notification');
       }
     }
@@ -95,7 +97,7 @@ class Ad {
           this.url;
 
         try {
-          await notifier.sendNotification(msg, this.id);
+          await sendNotification(msg, this.id);
         } catch (error) {
           $logger.error(error);
         }
