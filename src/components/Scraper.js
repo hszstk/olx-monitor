@@ -1,14 +1,13 @@
-const cheerio = require('cheerio');
-const $logger = require('./Logger');
-const $httpClient = require('./HttpClient.js');
-const scraperRepository = require('../repositories/scrapperRepository.js');
+import * as cheerio from 'cheerio';
+import $logger from '#components/Logger.js';
+import $httpClient from '#components/HttpClient.js';
+import * as scraperRepository from '#repositories/scrapperRepository.js';
 
-const Ad = require('./Ad.js');
+import Ad from '#components/Ad.js';
 
 let page = 1;
 let maxPrice = 0;
 let minPrice = 99999999;
-let sumPrices = 0;
 let validAds = 0;
 let adsFound = 0;
 let nextPage = true;
@@ -17,7 +16,6 @@ const scraper = async (url) => {
   page = 1;
   maxPrice = 0;
   minPrice = 99999999;
-  sumPrices = 0;
   adsFound = 0;
   validAds = 0;
   nextPage = true;
@@ -27,7 +25,7 @@ const scraper = async (url) => {
   const notify = await urlAlreadySearched(url);
   $logger.info(`Will notify: ${notify}`);
 
-  currentUrl = setUrlParam(url, 'o', page);
+  const currentUrl = setUrlParam(url, 'o', page);
   try {
     const response = await $httpClient(currentUrl);
     const $ = cheerio.load(response);
@@ -45,7 +43,6 @@ const scraper = async (url) => {
     const scrapperLog = {
       url,
       adsFound: validAds,
-      averagePrice,
       minPrice,
       maxPrice,
     };
@@ -100,7 +97,6 @@ const scrapePage = async ($, searchTerm, notify) => {
         validAds++;
         minPrice = checkMinPrice(ad.price, minPrice);
         maxPrice = checkMaxPrice(ad.price, maxPrice);
-        sumPrices += ad.price;
       }
     }
 
@@ -143,6 +139,4 @@ const checkMaxPrice = (price, maxPrice) => {
   else return maxPrice;
 };
 
-module.exports = {
-  scraper,
-};
+export { scraper };

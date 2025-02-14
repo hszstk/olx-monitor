@@ -1,10 +1,11 @@
-'use strict';
+import fetch from 'node-fetch';
 
-const config = require('../config');
-const axios = require('axios');
+import config from '#config.js';
 
-exports.sendNotification = async (msg) => {
+const sendNotification = async (msg) => {
   const apiUrl = `https://api.telegram.org/bot${config.telegramToken}/sendMessage?chat_id=${config.telegramChatID}&message_thread_id=5&text=`;
   const encodedMsg = encodeURIComponent(msg);
-  return await axios.get(apiUrl + encodedMsg, { timeout: 8000 });
+  return await fetch(apiUrl + encodedMsg, { timeout: 8000 });
 };
+
+export default sendNotification;

@@ -1,5 +1,5 @@
-const { db } = require('../database/database.js');
-const $logger = require('../components/Logger.js');
+import { db } from '#database/database.js';
+import $logger from '#components/Logger.js';
 
 const getAd = async (id) => {
   $logger.debug('adRepositorie: getAd');
@@ -8,19 +8,17 @@ const getAd = async (id) => {
   const values = [id];
 
   return new Promise(function (resolve, reject) {
-    db.get(query, values, function (error, row) {
-      if (error) {
-        reject(error);
-        return;
-      }
-
+    try {
+      const row = db.prepare(query).get(values);
       if (!row) {
         reject('No ad with this ID was found');
         return;
       }
 
       resolve(row);
-    });
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
@@ -31,19 +29,17 @@ const getAdsBySearchTerm = async (term, limit) => {
   const values = [term, limit];
 
   return new Promise(function (resolve, reject) {
-    db.all(query, values, function (error, rows) {
-      if (error) {
-        reject(error);
-        return;
-      }
-
+    try {
+      const rows = db.prepare(query).all(values);
       if (!rows) {
         reject('No ad with this term was found');
         return;
       }
 
       resolve(rows);
-    });
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
@@ -54,19 +50,17 @@ const getAdsBySearchId = async (id, limit) => {
   const values = [id, limit];
 
   return new Promise(function (resolve, reject) {
-    db.all(query, values, function (error, rows) {
-      if (error) {
-        reject(error);
-        return;
-      }
-
+    try {
+      const rows = db.prepare(query).all(values);
       if (!rows) {
         reject('No ad with this id was found');
         return;
       }
 
       resolve(rows);
-    });
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
@@ -83,14 +77,13 @@ const createAd = async (ad) => {
   const values = [ad.id, ad.url, ad.title, ad.searchTerm, ad.price, now, now];
 
   return new Promise(function (resolve, reject) {
-    db.run(query, values, function (error, rows) {
-      if (error) {
-        reject(error);
-        return;
-      }
+    try {
+      const rows = db.prepare(query).run(values);
 
       resolve(rows);
-    });
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
@@ -101,21 +94,14 @@ const updateAd = async (ad) => {
   const values = [ad.price, new Date().toISOString(), ad.id];
 
   return new Promise(function (resolve, reject) {
-    db.run(query, values, function (error) {
-      if (error) {
-        reject(error);
-        return;
-      }
+    try {
+      const rows = db.prepare(query).run(values);
 
-      resolve(true);
-    });
+      resolve(rows);
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
-module.exports = {
-  getAd,
-  getAdsBySearchTerm,
-  getAdsBySearchId,
-  createAd,
-  updateAd,
-};
+export { getAd, getAdsBySearchTerm, getAdsBySearchId, createAd, updateAd };

@@ -1,9 +1,11 @@
-const config = require('./config');
-const cron = require('node-cron');
-const { initializeCycleTLS } = require('./components/CycleTls');
-const $logger = require('./components/Logger');
-const { scraper } = require('./components/Scraper');
-const { createTables } = require('./database/database.js');
+import cron from 'node-cron';
+import '@dotenvx/dotenvx/config';
+
+import config from '#config.js';
+import { initializeCycleTLS } from '#components/CycleTls.js';
+import $logger from '#components/Logger.js';
+import { scraper } from '#components/Scraper.js';
+import { createTables } from '#database/database.js';
 
 const runScraper = async () => {
   const searchsArray = config.searchTerms.reduce((accumulator, currentValue) => {
@@ -11,11 +13,11 @@ const runScraper = async () => {
     return [...accumulator, ...test];
   }, []);
 
-  for (const [key, value] of Object.entries(object1)) {
-    console.log(`${key}: ${value}`);
-  }
+  // for (const [key, value] of Object.entries(object1)) {
+  //   console.log(`${key}: ${value}`);
+  // }
 
-  const test = config.searches;
+  // const test = config.searches;
 
   console.log(searchsArray);
 

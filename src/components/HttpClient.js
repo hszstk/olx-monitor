@@ -1,6 +1,6 @@
-const $logger = require('./Logger.js');
-const { getCycleTLSInstance } = require('./CycleTls');
-const { requestsFingerprints } = require('../requestsFingerprints.js');
+import $logger from '#components/Logger.js';
+import { getCycleTLSInstance } from '#components/CycleTls.js';
+import { requestsFingerprints } from '#requestsFingerprints.js';
 
 const headers = {
   Accept:
@@ -39,4 +39,4 @@ const httpClient = async (url) => {
   }
 };
 
-module.exports = httpClient;
+export default httpClient;
