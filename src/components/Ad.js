@@ -30,9 +30,7 @@ class Ad {
             // check if this entry was already added to DB
             if (await this.alreadySaved()) {
                 return this.checkPriceChange()
-            }
-
-            else {
+            } else {
                 // create a new entry in the database
                 return this.addToDataBase()
             }
@@ -56,9 +54,7 @@ class Ad {
         try {
             await adRepository.createAd(this)
             $logger.info('Ad ' + this.id + ' added to the database')
-        }
-
-        catch (error) {
+        } catch (error) {
             $logger.error(error)
         }
 

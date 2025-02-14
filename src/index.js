@@ -1,30 +1,42 @@
-const config = require("./config")
-const cron = require("node-cron")
-const { initializeCycleTLS } = require("./components/CycleTls")
-const $logger = require("./components/Logger")
-const { scraper } = require("./components/Scraper")
-const { createTables } = require("./database/database.js")
+const config = require('./config');
+const cron = require('node-cron');
+const { initializeCycleTLS } = require('./components/CycleTls');
+const $logger = require('./components/Logger');
+const { scraper } = require('./components/Scraper');
+const { createTables } = require('./database/database.js');
 
 const runScraper = async () => {
+  const searchsArray = config.searchTerms.reduce((accumulator, currentValue) => {
+    const test = config.baseUrls.map((baseUrl) => baseUrl + currentValue);
+    return [...accumulator, ...test];
+  }, []);
 
-  for (let i = 0; i < config.urls.length; i++) {
+  for (const [key, value] of Object.entries(object1)) {
+    console.log(`${key}: ${value}`);
+  }
+
+  const test = config.searches;
+
+  console.log(searchsArray);
+
+  for (let i = 0; i < searchsArray.length; i++) {
     try {
-      scraper(config.urls[i])
+      scraper(searchsArray[i]);
     } catch (error) {
-      $logger.error(error)
+      $logger.error(error);
     }
   }
-}
+};
 
 const main = async () => {
-  $logger.info("Program started")
-  await createTables()
-  await initializeCycleTLS()
-  runScraper()
-}
+  $logger.info('Program started');
+  await createTables();
+  await initializeCycleTLS();
+  runScraper();
+};
 
-main()
+main();
 
 cron.schedule(config.interval, () => {
-  runScraper()
-})
+  runScraper();
+});

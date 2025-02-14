@@ -1,12 +1,9 @@
-const path = require('path')
-const config = require('../config')
-const sqlite = require("sqlite3").verbose()
-const db = new sqlite.Database(
-  path.join(__dirname, '../', config.dbFile)
-)
+const path = require('path');
+const config = require('../config');
+const sqlite = require('sqlite3').verbose();
+const db = new sqlite.Database(path.join(__dirname, '../', config.dbFile));
 
 const createTables = async () => {
-
   // Define separate SQL statements for each table creation
   const queries = [
     `
@@ -29,10 +26,10 @@ const createTables = async () => {
         "maxPrice"      NUMERIC NOT NULL, 
         "created"       TEXT NOT NULL,
         PRIMARY KEY("id" AUTOINCREMENT)
-    );`
+    );`,
   ];
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Iterate through the array of queries and execute them one by one
     const executeQuery = (index) => {
       if (index === queries.length) {
@@ -40,7 +37,7 @@ const createTables = async () => {
         return;
       }
 
-      db.run(queries[index], function(error) {
+      db.run(queries[index], function (error) {
         if (error) {
           reject(error);
           return;
@@ -54,9 +51,9 @@ const createTables = async () => {
     // Start executing the queries from index 0
     executeQuery(0);
   });
-}
+};
 
 module.exports = {
   db,
-  createTables
-}
+  createTables,
+};
