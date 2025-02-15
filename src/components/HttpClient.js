@@ -1,27 +1,25 @@
-const $logger = require("./Logger.js")
-const { getCycleTLSInstance } = require("./CycleTls")
-const { requestsFingerprints } = require("../requestsFingerprints.js")
+import $logger from '#components/Logger.js';
+import { getCycleTLSInstance } from '#components/CycleTls.js';
+import { requestsFingerprints } from '#requestsFingerprints.js';
 
 const headers = {
   Accept:
-    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-  "Accept-Language": "en-US,en;q=0.5",
-  "Accept-Encoding": "gzip, deflate, br",
-  "Upgrade-Insecure-Requests": "1",
-  "Sec-Fetch-Dest": "document",
-  "Sec-Fetch-Mode": "navigate",
-  "Sec-Fetch-Site": "none",
-  Pragma: "no-cache",
-  "Cache-Control": "no-cache",
-}
+    'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+  'Accept-Language': 'en-US,en;q=0.5',
+  'Accept-Encoding': 'gzip, deflate, br',
+  'Upgrade-Insecure-Requests': '1',
+  'Sec-Fetch-Dest': 'document',
+  'Sec-Fetch-Mode': 'navigate',
+  'Sec-Fetch-Site': 'none',
+  Pragma: 'no-cache',
+  'Cache-Control': 'no-cache',
+};
 
 const httpClient = async (url) => {
-  const cycleTLS = await getCycleTLSInstance()
+  const cycleTLS = await getCycleTLSInstance();
 
   const randomRequestFingerprint =
-    requestsFingerprints[
-      Math.floor(Math.random() * requestsFingerprints.length)
-    ]
+    requestsFingerprints[Math.floor(Math.random() * requestsFingerprints.length)];
 
   try {
     // Send request
@@ -32,13 +30,13 @@ const httpClient = async (url) => {
         ja3: randomRequestFingerprint[1],
         headers,
       },
-      "get"
-    )
+      'get',
+    );
 
-    return response.body
+    return response.body;
   } catch (error) {
-    $logger.error(error)
+    $logger.error(error);
   }
-}
+};
 
-module.exports = httpClient
+export default httpClient;

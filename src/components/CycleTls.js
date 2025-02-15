@@ -1,21 +1,17 @@
-const initCycleTLS = require("cycletls")
+import initCycleTLS from 'cycletls';
 
-let cycleTLSInstance
+let cycleTLSInstance;
 
 async function initializeCycleTLS() {
-  cycleTLSInstance = await initCycleTLS()
+  cycleTLSInstance = await initCycleTLS();
 }
 
 async function exitCycleTLS() {
-  cycleTLSInstance.exit()
+  cycleTLSInstance.exit();
 }
 
 function getCycleTLSInstance() {
-  return cycleTLSInstance
+  return cycleTLSInstance;
 }
 
-module.exports = {
-  initializeCycleTLS,
-  getCycleTLSInstance,
-  exitCycleTLS,
-}
+export { initializeCycleTLS, getCycleTLSInstance, exitCycleTLS };

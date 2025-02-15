@@ -1,6 +1,5 @@
 version: "3.7"
 services:
-
   olx-monitor:
     build: .
     restart: unless-stopped
